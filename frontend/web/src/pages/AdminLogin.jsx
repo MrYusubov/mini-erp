@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { adminLogin } from '../utils/auth';
-import { Shield, Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { Shield, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 
 export default function AdminLogin() {
     const [email, setEmail] = useState('');
@@ -20,7 +20,7 @@ export default function AdminLogin() {
             await adminLogin(email, password);
             nav('/admin/products');
         } catch (err) {
-            setError('Giriş başarısız. Lütfen bilgilerinizi kontrol edin.');
+            setError('Login failed. Please check your credentials.');
         } finally {
             setBusy(false);
         }
@@ -38,7 +38,7 @@ export default function AdminLogin() {
                     <div className="inline-flex items-center gap-2 bg-red-600/20 backdrop-blur-sm border border-red-500/30 rounded-full px-4 py-2">
                         <Shield className="w-4 h-4 text-red-400" />
                         <span className="text-red-400 text-sm font-semibold uppercase tracking-wider">
-                            Yönetici Girişi
+                            Admin Login
                         </span>
                     </div>
                 </div>
@@ -51,23 +51,22 @@ export default function AdminLogin() {
                     </div>
 
                     <h2 className="text-2xl font-bold text-white text-center mb-2">
-                        Admin Paneli
+                        Admin Panel
                     </h2>
                     <p className="text-slate-400 text-center mb-8 text-sm">
-                        Yönetici hesabınızla giriş yapın
+                        Sign in with your administrator account
                     </p>
 
                     {error && (
-                        <div className="mb-6 bg-red-600/10 border border-red-500/30 rounded-lg p-3 flex items-start gap-3">
-                            <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                            <p className="text-red-400 text-sm">{error}</p>
+                        <div className="mb-6 bg-red-600/10 border border-red-500/30 rounded-lg p-3">
+                            <p className="text-red-400 text-sm text-center">{error}</p>
                         </div>
                     )}
 
                     <form onSubmit={submit} className="space-y-5">
                         <div className="relative group">
                             <label className="block text-slate-300 text-sm font-medium mb-2">
-                                E-posta Adresi
+                                Email Address
                             </label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -86,7 +85,7 @@ export default function AdminLogin() {
 
                         <div className="relative group">
                             <label className="block text-slate-300 text-sm font-medium mb-2">
-                                Şifre
+                                Password
                             </label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -121,12 +120,12 @@ export default function AdminLogin() {
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
-                                    Giriş yapılıyor...
+                                    Signing in...
                                 </span>
                             ) : (
                                 <span className="flex items-center justify-center gap-2">
                                     <Shield className="w-5 h-5" />
-                                    Güvenli Giriş
+                                    Secure Login
                                 </span>
                             )}
                         </button>
@@ -135,14 +134,14 @@ export default function AdminLogin() {
                     <div className="mt-6 pt-6 border-t border-slate-700/50">
                         <div className="flex items-center gap-2 text-slate-500 text-xs">
                             <Shield className="w-4 h-4" />
-                            <span>Güvenli bağlantı ile korunmaktadır</span>
+                            <span>Protected with secure connection</span>
                         </div>
                     </div>
                 </div>
 
                 <div className="mt-6 text-center">
                     <p className="text-slate-500 text-sm">
-                        ⚠️ Bu alan yalnızca yetkili yöneticiler içindir
+                        ⚠️ This area is for authorized administrators only
                     </p>
                 </div>
             </div>

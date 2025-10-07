@@ -14,10 +14,9 @@ export default function Register() {
     setBusy(true);
     try {
       await api.post("/api/auth/register", form);
-      alert("Kayıt başarılı! Şimdi giriş yapabilirsiniz.");
       navigate("/login");
     } catch (err) {
-      alert(err.response?.data?.detail || err.message || "Kayıt başarısız");
+      console.error(err.response?.data?.detail || err.message || "Registration failed");
     } finally {
       setBusy(false);
     }
@@ -38,10 +37,10 @@ export default function Register() {
           </div>
 
           <h2 className="text-3xl font-bold text-white text-center mb-2">
-            Hesap Oluşturun
+            Create an Account
           </h2>
           <p className="text-white/70 text-center mb-8">
-            Yeni bir hesap oluşturun
+            Register a new account
           </p>
 
           <form onSubmit={submit} className="space-y-5">
@@ -51,7 +50,7 @@ export default function Register() {
               </div>
               <input
                 type="text"
-                placeholder="Ad Soyad"
+                placeholder="Full Name"
                 value={form.full_name}
                 onChange={(e) => setForm({ ...form, full_name: e.target.value })}
                 className="w-full bg-white/10 border border-white/20 rounded-xl py-3 pl-12 pr-4 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all backdrop-blur-sm"
@@ -65,7 +64,7 @@ export default function Register() {
               </div>
               <input
                 type="email"
-                placeholder="E-posta adresiniz"
+                placeholder="Email address"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 className="w-full bg-white/10 border border-white/20 rounded-xl py-3 pl-12 pr-4 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all backdrop-blur-sm"
@@ -79,7 +78,7 @@ export default function Register() {
               </div>
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder="Şifreniz"
+                placeholder="Password"
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 className="w-full bg-white/10 border border-white/20 rounded-xl py-3 pl-12 pr-12 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all backdrop-blur-sm"
@@ -105,28 +104,28 @@ export default function Register() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Kayıt yapılıyor...
+                  Registering...
                 </span>
               ) : (
-                "Kayıt Ol"
+                "Register"
               )}
             </button>
           </form>
 
           <div className="flex items-center my-6">
             <div className="flex-1 border-t border-white/20"></div>
-            <span className="px-4 text-white/50 text-sm">veya</span>
+            <span className="px-4 text-white/50 text-sm">or</span>
             <div className="flex-1 border-t border-white/20"></div>
           </div>
 
           <div className="text-center">
             <p className="text-white/70">
-              Zaten hesabınız var mı?{" "}
+              Already have an account?{" "}
               <Link
                 to="/login"
                 className="text-cyan-300 font-semibold hover:text-cyan-200 transition-colors"
               >
-                Giriş Yapın
+                Login
               </Link>
             </p>
           </div>

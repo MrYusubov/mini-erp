@@ -1,5 +1,5 @@
 import os
-from sqlmodel import SQLModel, create_engine
+from sqlmodel import SQLModel, create_engine,Session
 from sqlalchemy.orm import sessionmaker
 from typing import Generator
 
@@ -10,9 +10,6 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 def init_db():
     SQLModel.metadata.create_all(engine)
 
-def get_session() -> Generator:
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+def get_session():
+    with Session(engine) as session:
+        yield session

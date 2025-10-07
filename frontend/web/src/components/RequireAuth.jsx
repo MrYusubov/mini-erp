@@ -6,7 +6,13 @@ export default function RequireAuth({ children }) {
   const { user, loading } = useContext(AuthContext);
   const loc = useLocation();
 
+  const adminToken = localStorage.getItem("admin_token");
+
   if (loading) return <div>Loading...</div>;
-  if (!user) return <Navigate to="/login" state={{ from: loc }} replace />;
+
+  if (!user && !adminToken) {
+    return <Navigate to="/login" state={{ from: loc }} replace />;
+  }
+
   return children;
 }

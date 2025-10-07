@@ -16,6 +16,7 @@ return res
 
 export function logout() {
 localStorage.removeItem('token')
+localStorage.removeItem('admin_token')
 setAuthToken(null)
 }
 

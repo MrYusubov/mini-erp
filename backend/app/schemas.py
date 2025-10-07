@@ -80,3 +80,12 @@ class UserRead(BaseModel):
     is_superuser: bool
     class Config:
         from_attributes = True
+
+
+class ProductUpdate(BaseModel):
+    name: Optional[str] = None
+    sku: Optional[str] = None
+    price: Optional[float] = None
+    qty_in_stock: Optional[int] = None
+    is_active: Optional[bool] = None
+    slug: Optional[str] = None

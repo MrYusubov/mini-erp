@@ -21,7 +21,6 @@ export default function Login() {
       await login(email, password);
       navigate(from, { replace: true });
     } catch (err) {
-      alert(err.response?.data?.detail || err.message || "Login failed");
     } finally {
       setBusy(false);
     }
@@ -42,10 +41,10 @@ export default function Login() {
           </div>
 
           <h2 className="text-3xl font-bold text-white text-center mb-2">
-            Hoş Geldiniz
+            Welcome
           </h2>
           <p className="text-white/70 text-center mb-8">
-            Hesabınıza giriş yapın
+            Log In Your Account
           </p>
 
           <form onSubmit={submit} className="space-y-5">
@@ -55,7 +54,7 @@ export default function Login() {
               </div>
               <input
                 type="email"
-                placeholder="E-posta adresiniz"
+                placeholder="Your E-Mail"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-white/10 border border-white/20 rounded-xl py-3 pl-12 pr-4 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all backdrop-blur-sm"
@@ -69,7 +68,7 @@ export default function Login() {
               </div>
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder="Şifreniz"
+                placeholder="Your Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full bg-white/10 border border-white/20 rounded-xl py-3 pl-12 pr-12 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all backdrop-blur-sm"
@@ -86,7 +85,7 @@ export default function Login() {
 
             <div className="flex justify-end">
               <a href="#" className="text-sm text-white/70 hover:text-white transition-colors">
-                Şifremi unuttum
+                Forgot Password
               </a>
             </div>
 
@@ -101,28 +100,28 @@ export default function Login() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Giriş yapılıyor...
+                  Logging In...
                 </span>
               ) : (
-                "Giriş Yap"
+                "Log In"
               )}
             </button>
           </form>
 
           <div className="flex items-center my-6">
             <div className="flex-1 border-t border-white/20"></div>
-            <span className="px-4 text-white/50 text-sm">veya</span>
+            <span className="px-4 text-white/50 text-sm">or</span>
             <div className="flex-1 border-t border-white/20"></div>
           </div>
 
           <div className="text-center">
             <p className="text-white/70">
-              Hesabınız yok mu?{" "}
+              You don't have Account?{" "}
               <Link
                 to="/register"
                 className="text-cyan-300 font-semibold hover:text-cyan-200 transition-colors"
               >
-                Kayıt Olun
+                Lets Sign Up
               </Link>
             </p>
           </div>

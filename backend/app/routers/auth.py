@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy.orm import Session
-from sqlalchemy import select
+from sqlmodel import Session, select  # ← SQLModel import
 from typing import Any
 from ..deps import get_current_user
 
@@ -16,10 +15,12 @@ router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 @router.post("/token")
 def login_for_access_token(
-    form_data: OAuth2PasswordRequestForm = Depends(),
-    session: Session = Depends(get_session)
+        form_data: OAuth2PasswordRequestForm = Depends(),
+        session: Session = Depends(get_session)
 ):
-    user = session.query(User).filter(User.email == form_data.username).first()
+    statement = select(User).where(User.email == form_data.username)
+    user = session.exec(statement).first()
+
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(status_code=400, detail="Incorrect email or password")
 
@@ -34,7 +35,9 @@ class LoginRequest(BaseModel):
 
 @router.post("/login")
 def login(payload: LoginRequest, session: Session = Depends(get_session)) -> Any:
-    user = session.query(User).filter(User.email == payload.email).first()
+    statement = select(User).where(User.email == payload.email)
+    user = session.exec(statement).first()
+
     if not user or not verify_password(payload.password, user.hashed_password):
         raise HTTPException(status_code=400, detail="Incorrect email or password")
 
@@ -44,7 +47,9 @@ def login(payload: LoginRequest, session: Session = Depends(get_session)) -> Any
 
 @router.post("/register", response_model=UserRead)
 def register_user(payload: UserCreate, session: Session = Depends(get_session)):
-    user_exists = session.query(User).filter(User.email == payload.email).first()
+    statement = select(User).where(User.email == payload.email)
+    user_exists = session.exec(statement).first()
+
     if user_exists:
         raise HTTPException(status_code=400, detail="Email already registered")
 
@@ -69,7 +74,9 @@ def read_me(current_user: User = Depends(get_current_user)):
 
 @router.post("/admin/login")
 def admin_login(payload: LoginRequest, session: Session = Depends(get_session)):
-    user = session.query(User).filter(User.email == payload.email).first()
+    statement = select(User).where(User.email == payload.email)
+    user = session.exec(statement).first()
+
     if not user or not verify_password(payload.password, user.hashed_password):
         raise HTTPException(status_code=400, detail="Incorrect email or password")
 

@@ -27,18 +27,16 @@ def read_products(
     return products
 
 
-# @router.post("/", response_model=schemas.ProductRead)
-# def create_product(payload: schemas.ProductCreate, session: Session = Depends(get_session)):
-#     p = crud.create_product(
-#         session,
-#         name=payload.name,
-#         sku=payload.sku,
-#         price=payload.price,
-#         qty_in_stock=payload.qty_in_stock,
-#         is_active=payload.is_active,
-#         slug=payload.slug,
-#     )
-#     return p
+@router.get("/p/{slug}", response_model=schemas.ProductRead)
+def get_product_by_slug(slug: str, session: Session = Depends(get_session)):
+    statement = select(models.Product).where(models.Product.slug == slug)
+    product = session.exec(statement).first()
+
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    return product
+
 
 
 @router.post("/", response_model=schemas.ProductRead)
@@ -97,3 +95,39 @@ def import_products(file: UploadFile = File(...), session: Session = Depends(get
             errors.append(str(e))
             continue
     return {"created": len(created), "errors": errors}
+
+@router.put("/{product_id}", response_model=schemas.ProductRead)
+def update_product(
+    product_id: int,
+    payload: schemas.ProductUpdate,
+    session: Session = Depends(get_session),
+    current_admin: User = Depends(get_current_admin),
+):
+    product = session.get(models.Product, product_id)
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    # Update fields dynamically
+    update_data = payload.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(product, key, value)
+
+    session.add(product)
+    session.commit()
+    session.refresh(product)
+    return product
+
+
+@router.delete("/{product_id}")
+def delete_product(
+    product_id: int,
+    session: Session = Depends(get_session),
+    current_admin: User = Depends(get_current_admin),
+):
+    product = session.get(models.Product, product_id)
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    session.delete(product)
+    session.commit()
+    return {"ok": True, "message": "Product deleted"}
